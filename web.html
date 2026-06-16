@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English Studio</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18212f;
+      --muted: #667085;
+      --line: #d9e1ea;
+      --paper: #f7f9fc;
+      --panel: #ffffff;
+      --teal: #0f766e;
+      --teal-dark: #115e59;
+      --coral: #e25544;
+      --gold: #c98a12;
+      --blue: #2563eb;
+      --green-soft: #dff5ef;
+      --shadow: 0 18px 45px rgba(26, 40, 58, 0.12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(15, 118, 110, 0.09), transparent 360px),
+        var(--paper);
+      color: var(--ink);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: var(--teal);
+      color: white;
+      font-weight: 800;
+      letter-spacing: 0;
+      flex: 0 0 auto;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 15px;
+    }
+
+    .progress {
+      min-width: 190px;
+      padding: 10px 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 22px rgba(26, 40, 58, 0.06);
+    }
+
+    .progress span {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .bar {
+      height: 8px;
+      background: #edf1f6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--gold));
+      transition: width 250ms ease;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .workspace {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      padding: 12px;
+      position: sticky;
+      top: 16px;
+    }
+
+    .nav-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink);
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .nav-button svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2;
+      flex: 0 0 auto;
+    }
+
+    .nav-button.active {
+      background: var(--green-soft);
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+
+    .lesson-select {
+      width: 100%;
+      margin-top: 12px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: white;
+    }
+
+    .workspace {
+      min-height: 660px;
+      overflow: hidden;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      align-items: stretch;
+      padding: 28px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .hero-copy h2 {
+      font-size: clamp(30px, 5vw, 56px);
+      line-height: 0.98;
+      letter-spacing: 0;
+      max-width: 620px;
+    }
+
+    .hero-copy p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 620px;
+    }
+
+    .hero-art {
+      min-height: 250px;
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(13, 39, 53, 0.08), rgba(13, 39, 53, 0.04)),
+        url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80") center/cover;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-art::after {
+      content: "A1 - B1";
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--teal-dark);
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+    }
+
+    .actions,
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .primary,
+    .secondary,
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      border-radius: 8px;
+      padding: 0 14px;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .primary:hover {
+      background: var(--teal-dark);
+    }
+
+    .secondary,
+    .icon-button {
+      background: #eef3f7;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .icon-button {
+      width: 42px;
+      padding: 0;
+    }
+
+    .primary svg,
+    .secondary svg,
+    .icon-button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .content {
+      padding: 24px 28px 28px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .section-head h2 {
+      font-size: 24px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.45;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .word-card,
+    .practice-card,
+    .quiz-card,
+    .note-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .word-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 190px;
+    }
+
+    .word-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .word {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .phonetic {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .meaning {
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+
+    .example {
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: auto;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: #fff2d8;
+      color: #835707;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .flashcard {
+      min-height: 340px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(226, 85, 68, 0.08)),
+        #fff;
+      text-align: center;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+    .flashcard .big {
+      font-size: clamp(38px, 8vw, 74px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .flashcard .small {
+      color: var(--muted);
+      margin-top: 12px;
+      font-size: 18px;
+    }
+
+    .practice-card,
+    .quiz-card {
+      max-width: 720px;
+    }
+
+    .prompt {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .answer-input {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .feedback {
+      min-height: 28px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .feedback.correct {
+      color: var(--teal-dark);
+    }
+
+    .feedback.wrong {
+      color: var(--coral);
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .choice {
+      min-height: 50px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f7f9fc;
+      color: var(--ink);
+      padding: 10px;
+      text-align: left;
+      font-weight: 700;
+    }
+
+    .choice.correct {
+      background: #dff5ef;
+      border-color: #84d4bf;
+      color: var(--teal-dark);
+    }
+
+    .choice.wrong {
+      background: #ffe6e1;
+      border-color: #f2a195;
+      color: #a53727;
+    }
+
+    .note-panel {
+      display: grid;
+      gap: 14px;
+      max-width: 780px;
+      line-height: 1.55;
+    }
+
+    .note-panel h3 {
+      color: var(--teal-dark);
+    }
+
+    .note-panel ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      color: var(--teal-dark);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 880px) {
+      .layout,
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .grid,
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .app {
+        padding: 14px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .progress {
+        width: 100%;
+      }
+
+      .hero,
+      .content {
+        padding: 18px;
+      }
+
+      .grid,
+      .choices,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">ES</div>
+        <div>
+          <h1>English Studio</h1>
+          <p class="subtitle">Học từ vựng, luyện nghe, luyện viết và kiểm tra nhanh mỗi ngày.</p>
+        </div>
+      </div>
+      <div class="progress" aria-label="Tiến độ học">
+        <span><b>Tiến độ</b><b id="progressText">0%</b></span>
+        <div class="bar"><div class="bar-fill" id="progressBar"></div></div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" aria-label="Điều hướng">
+        <button class="nav-button active" data-view="vocabulary" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+          Từ vựng
+        </button>
+        <button class="nav-button" data-view="flashcards" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h5M7 13h10"/></svg>
+          Flashcard
+        </button>
+        <button class="nav-button" data-view="practice" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 20 9-16H3l9 16z"/><path d="M12 20v-7"/></svg>
+          Luyện viết
+        </button>
+        <button class="nav-button" data-view="quiz" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.8 2.8 0 1 1 4.8 2c-.9.8-1.3 1.2-1.3 2.2"/><path d="M12 17h.01"/></svg>
+          Quiz
+        </button>
+        <button class="nav-button" data-view="grammar" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 7h16M4 12h10M4 17h16"/><path d="M16 12l2 2 3-4"/></svg>
+          Ngữ pháp
+        </button>
+        <select class="lesson-select" id="lessonSelect" aria-label="Chọn chủ đề">
+          <option value="daily">Daily Life</option>
+          <option value="work">Work & Study</option>
+          <option value="travel">Travel</option>
+        </select>
+      </aside>
+
+      <section class="workspace">
+        <div class="hero">
+          <div class="hero-copy">
+            <h2>Học tiếng Anh bằng thao tác nhỏ, đều và rõ.</h2>
+            <p>Chọn chủ đề, nghe phát âm, lật flashcard, gõ lại từ mới và làm quiz ngắn để giữ nhịp học.</p>
+            <div class="actions">
+              <button class="primary" id="startButton" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+                Bắt đầu
+              </button>
+              <button class="secondary" id="resetButton" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v6h6"/></svg>
+                Làm lại
+              </button>
+            </div>
+          </div>
+          <div class="hero-art" aria-label="Sinh viên học tiếng Anh cùng nhau"></div>
+        </div>
+
+        <div class="content">
+          <section class="view active" id="vocabulary">
+            <div class="section-head">
+              <div>
+                <h2>Từ vựng hôm nay</h2>
+                <p>Nghe, đọc nghĩa và ví dụ để hiểu từ trong ngữ cảnh.</p>
+              </div>
+            </div>
+            <div class="grid" id="wordGrid"></div>
+          </section>
+
+          <section class="view" id="flashcards">
+            <div class="section-head">
+              <div>
+                <h2>Flashcard</h2>
+                <p>Lật thẻ để kiểm tra xem bạn nhớ nghĩa chưa.</p>
+              </div>
+            </div>
+            <div class="flashcard" id="flashcard" role="button" tabindex="0">
+              <div>
+                <div class="big" id="flashWord"></div>
+                <div class="small" id="flashHint"></div>
+              </div>
+            </div>
+            <div class="row">
+              <button class="secondary" id="prevCard" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 18-6-6 6-6"/></svg>
+                Trước
+              </button>
+              <button class="primary" id="flipCard" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+                Lật thẻ
+              </button>
+              <button class="secondary" id="nextCard" type="button">
+                Sau
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </section>
+
+          <section class="view" id="practice">
+            <div class="section-head">
+              <div>
+                <h2>Luyện viết</h2>
+                <p>Nhìn nghĩa tiếng Việt rồi gõ từ tiếng Anh tương ứng.</p>
+              </div>
+            </div>
+            <div class="practice-card">
+              <div class="prompt" id="practicePrompt"></div>
+              <input class="answer-input" id="practiceInput" autocomplete="off" placeholder="Nhập câu trả lời...">
+              <div class="row">
+                <button class="primary" id="checkPractice" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 6 9 17l-5-5"/></svg>
+                  Kiểm tra
+                </button>
+                <button class="secondary" id="skipPractice" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg>
+                  Câu khác
+                </button>
+              </div>
+              <div class="feedback" id="practiceFeedback"></div>
+            </div>
+          </section>
+
+          <section class="view" id="quiz">
+            <div class="section-head">
+              <div>
+                <h2>Quiz nhanh</h2>
+                <p>Chọn nghĩa đúng của từ đang hiển thị.</p>
+              </div>
+            </div>
+            <div class="quiz-card">
+              <div class="prompt" id="quizPrompt"></div>
+              <div class="choices" id="quizChoices"></div>
+              <div class="feedback" id="quizFeedback"></div>
+            </div>
+         </section>
+
+          <section class="view" id="grammar">
+            <div class="section-head">
+              <div>
+                <h2>Ghi chú ngữ pháp</h2>
+                <p>Một mẫu câu ngắn đi cùng chủ đề đang học.</p>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat"><strong id="learnedCount">0</strong><span>Từ đã chạm tới</span></div>
+              <div class="stat"><strong id="scoreCount">0</strong><span>Câu đúng</span></div>
+              <div class="stat"><strong id="streakCount">0</strong><span>Chuỗi đúng</span></div>
+            </div>
+            <article class="note-panel" id="grammarNote"></article>
+          </section>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const lessons = {
+      daily: {
+        grammar: {
+          title: "Present Simple",
+          pattern: "I / You / We / They + verb. He / She / It + verb-s.",
+          examples: ["I drink coffee every morning.", "She studies English after dinner.", "They walk to school."]
+        },
+        words: [
+          { word: "routine", phonetic: "/ruːˈtiːn/", meaning: "thói quen hằng ngày", example: "My morning routine starts at 6 a.m.", type: "noun" },
+          { word: "prepare", phonetic: "/prɪˈper/", meaning: "chuẩn bị", example: "I prepare breakfast for my family.", type: "verb" },
+          { word: "usually", phonetic: "/ˈjuːʒuəli/", meaning: "thường xuyên", example: "We usually study in the evening.", type: "adverb" },
+          { word: "healthy", phonetic: "/ˈhelθi/", meaning: "khỏe mạnh", example: "A healthy meal gives you energy.", type: "adjective" },
+          { word: "neighbor", phonetic: "/ˈneɪbər/", meaning: "hàng xóm", example: "Our neighbor is very friendly.", type: "noun" },
+          { word: "relax", phonetic: "/rɪˈlæks/", meaning: "thư giãn", example: "I relax by reading a book.", type: "verb" }
+        ]
+      },
+      work: {
+        grammar: {
+          title: "Can for Ability",
+          pattern: "Subject + can + base verb.",
+          examples: ["I can join the meeting.", "She can explain the report.", "We can finish it today."]
+        },
+        words: [
+          { word: "deadline", phonetic: "/ˈdedlaɪn/", meaning: "hạn chót", example: "The deadline is next Friday.", type: "noun" },
+          { word: "improve", phonetic: "/ɪmˈpruːv/", meaning: "cải thiện", example: "Practice can improve your speaking.", type: "verb" },
+          { word: "meeting", phonetic: "/ˈmiːtɪŋ/", meaning: "cuộc họp", example: "We have a meeting at nine.", type: "noun" },
+          { word: "explain", phonetic: "/ɪkˈspleɪn/", meaning: "giải thích", example: "Can you explain this idea?", type: "verb" },
+          { word: "project", phonetic: "/ˈprɑːdʒekt/", meaning: "dự án", example: "This project helps new students.", type: "noun" },
+          { word: "careful", phonetic: "/ˈkerfəl/", meaning: "cẩn thận", example: "Be careful with your answers.", type: "adjective" }
+        ]
+      },
+      travel: {
+        grammar: {
+          title: "Polite Requests",
+          pattern: "Could I / Could you + base verb?",
+          examples: ["Could I have a window seat?", "Could you show me the station?", "Could I pay by card?"]
+        },
+        words: [
+          { word: "arrival", phonetic: "/əˈraɪvəl/", meaning: "sự đến nơi", example: "Our arrival time is 8 p.m.", type: "noun" },
+          { word: "ticket", phonetic: "/ˈtɪkɪt/", meaning: "vé", example: "I booked a train ticket.", type: "noun" },
+          { word: "luggage", phonetic: "/ˈlʌɡɪdʒ/", meaning: "hành lý", example: "My luggage is very heavy.", type: "noun" },
+          { word: "direction", phonetic: "/dəˈrekʃən/", meaning: "chỉ dẫn đường", example: "Could you give me directions?", type: "noun" },
+          { word: "nearby", phonetic: "/ˌnɪrˈbaɪ/", meaning: "gần đây", example: "There is a cafe nearby.", type: "adverb" },
+          { word: "reserve", phonetic: "/rɪˈzɜːrv/", meaning: "đặt trước", example: "We need to reserve a room.", type: "verb" }
+        ]
+      }
+    };
+
+    const state = {
+      lesson: "daily",
+      view: "vocabulary",
+      flashIndex: 0,
+      flipped: false,
+      practiceIndex: 0,
+      quizIndex: 0,
+      learned: new Set(),
+      score: 0,
+      streak: 0
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function currentWords() {
+      return lessons[state.lesson].words;
+    }
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function markLearned(word) {
+      state.learned.add(`${state.lesson}:${word}`);
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = Object.values(lessons).reduce((sum, lesson) => sum + lesson.words.length, 0);
+      const percent = Math.round((state.learned.size / total) * 100);
+      $("#progressText").textContent = `${percent}%`;
+      $("#progressBar").style.width = `${percent}%`;
+      $("#learnedCount").textContent = state.learned.size;
+      $("#scoreCount").textContent = state.score;
+      $("#streakCount").textContent = state.streak;
+    }
+
+    function renderWords() {
+      const grid = $("#wordGrid");
+      grid.innerHTML = "";
+      currentWords().forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "word-card";
+        card.innerHTML = `
+          <div class="word-top">
+            <div>
+              <div class="word">${item.word}</div>
+              <div class="phonetic">${item.phonetic}</div>
+            </div>
+            <button class="icon-button" type="button" aria-label="Nghe phát âm ${item.word}" title="Nghe phát âm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            </button>
+          </div>
+          <div class="meaning">${item.meaning}</div>
+          <span class="tag">${item.type}</span>
+          <p class="example">${item.example}</p>
+        `;
+        card.querySelector("button").addEventListener("click", () => {
+          speak(item.word);
+          markLearned(item.word);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    function renderFlashcard() {
+      const item = currentWords()[state.flashIndex];
+      $("#flashWord").textContent = state.flipped ? item.meaning : item.word;
+      $("#flashHint").textContent = state.flipped ? item.example : `${item.phonetic} · bấm để lật`;
+      markLearned(item.word);
+    }
+
+    function nextFlash(step) {
+      const words = currentWords();
+      state.flashIndex = (state.flashIndex + step + words.length) % words.length;
+      state.flipped = false;
+      renderFlashcard();
+    }
+
+    function renderPractice() {
+      const item = currentWords()[state.practiceIndex];
+      $("#practicePrompt").textContent = `Từ tiếng Anh của "${item.meaning}" là gì?`;
+      $("#practiceInput").value = "";
+      $("#practiceFeedback").textContent = "";
+      $("#practiceFeedback").className = "feedback";
+    }
+
+    function nextPractice() {
+      state.practiceIndex = (state.practiceIndex + 1) % currentWords().length;
+      renderPractice();
+    }
+
+    function checkPractice() {
+      const item = currentWords()[state.practiceIndex];
+      const answer = $("#practiceInput").value.trim().toLowerCase();
+      const feedback = $("#practiceFeedback");
+      if (answer === item.word.toLowerCase()) {
+        feedback.textContent = `Đúng rồi: ${item.example}`;
+        feedback.className = "feedback correct";
+        state.score += 1;
+        state.streak += 1;
+        markLearned(item.word);
+        setTimeout(nextPractice, 900);
+      } else {
+        feedback.textContent = `Chưa đúng. Gợi ý: ${item.word[0].toUpperCase()}...`;
+        feedback.className = "feedback wrong";
+        state.streak = 0;
+        updateProgress();
+      }
+    }
+
+    function shuffle(items) {
+      return [...items].sort(() => Math.random() - 0.5);
+    }
+
+    function renderQuiz() {
+      const words = currentWords();
+      const item = words[state.quizIndex];
+      const options = shuffle([item.meaning, ...shuffle(words.filter((word) => word.word !== item.word)).slice(0, 3).map((word) => word.meaning)]);
+      $("#quizPrompt").textContent = `Nghĩa của "${item.word}" là gì?`;
+      $("#quizFeedback").textContent = "";
+      $("#quizFeedback").className = "feedback";
+      $("#quizChoices").innerHTML = "";
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.type = "button";
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          const correct = option === item.meaning;
+          button.classList.add(correct ? "correct" : "wrong");
+          $("#quizFeedback").textContent = correct ? item.example : `Đáp án đúng: ${item.meaning}`;
+          $("#quizFeedback").className = `feedback ${correct ? "correct" : "wrong"}`;
+          state.score += correct ? 1 : 0;
+          state.streak = correct ? state.streak + 1 : 0;
+          markLearned(item.word);
+          setTimeout(() => {
+            state.quizIndex = (state.quizIndex + 1) % words.length;
+            renderQuiz();
+          }, 1000);
+        });
+        $("#quizChoices").appendChild(button);
+      });
+    }
+
+    function renderGrammar() {
+      const grammar = lessons[state.lesson].grammar;
+      $("#grammarNote").innerHTML = `
+        <h3>${grammar.title}</h3>
+        <p><strong>Cấu trúc:</strong> ${grammar.pattern}</p>
+        <ul>${grammar.examples.map((example) => `<li>${example}</li>`).join("")}</ul>
+      `;
+    }
+
+    function switchView(view) {
+      state.view = view;
+      $$(".nav-button").forEach((button) => button.classList.toggle("active", button.dataset.view === view));
+      $$(".view").forEach((section) => section.classList.toggle("active", section.id === view));
+      if (view === "flashcards") renderFlashcard();
+      if (view === "practice") renderPractice();
+      if (view === "quiz") renderQuiz();
+      if (view === "grammar") renderGrammar();
+    }
+
+    function changeLesson(lesson) {
+      state.lesson = lesson;
+      state.flashIndex = 0;
+      state.practiceIndex = 0;
+      state.quizIndex = 0;
+      state.flipped = false;
+      renderWords();
+      renderFlashcard();
+      renderPractice();
+      renderQuiz();
+      renderGrammar();
+    }
+
+    $$(".nav-button").forEach((button) => button.addEventListener("click", () => switchView(button.dataset.view)));
+    $("#lessonSelect").addEventListener("change", (event) => changeLesson(event.target.value));
+    $("#startButton").addEventListener("click", () => switchView("vocabulary"));
+    $("#resetButton").addEventListener("click", () => {
+      state.learned.clear();
+      state.score = 0;
+      state.streak = 0;
+      updateProgress();
+      renderPractice();
+      renderQuiz();
+    });
+    $("#flashcard").addEventListener("click", () => {
+      state.flipped = !state.flipped;
+      renderFlashcard();
+    });
+    $("#flashcard").addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        state.flipped = !state.flipped;
+        renderFlashcard();
+      }
+    });
+    $("#flipCard").addEventListener("click", () => {
+      state.flipped = !state.flipped;
+      renderFlashcard();
+    });
+    $("#prevCard").addEventListener("click", () => nextFlash(-1));
+    $("#nextCard").addEventListener("click", () => nextFlash(1));
+    $("#checkPractice").addEventListener("click", checkPractice);
+    $("#skipPractice").addEventListener("click", nextPractice);
+    $("#practiceInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") checkPractice();
+    });
+
+    renderWords();
+    renderFlashcard();
+    renderPractice();
+    renderQuiz();
+    renderGrammar();
+    updateProgress();
+  </script>
+</body>
+</html>
